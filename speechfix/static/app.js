@@ -286,7 +286,7 @@ function onAnalysisDone() {
   toast('✓ Analysis complete');
  
   // Animate SVG score ring
-  const ring = document.querySelector('#analysis-result circle[stroke-dasharray]');
+  const ring = document.querySelector('#analysis_data circle[stroke-dasharray]');
   if (ring) {
     const target = ring.getAttribute('stroke-dasharray');
     ring.setAttribute('stroke-dasharray', '0 163.36');
@@ -296,7 +296,7 @@ function onAnalysisDone() {
 }
  
 function startOver() {
-  document.getElementById('analysis-result').innerHTML = '';
+  document.getElementById('analysis_data').innerHTML = '';
   audioChunks = [];
   goToStage(0);
 }
