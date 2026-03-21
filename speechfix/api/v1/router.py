@@ -24,7 +24,6 @@ async def process_audio(
     
     loop = asyncio.get_event_loop()
     
-    # Step 1: Transcribe with local Vosk (Run in thread pool to prevent blocking)
     transcript = await loop.run_in_executor(
         None, transcribe_audio_whisper, audio_bytes
     )
@@ -39,7 +38,7 @@ async def process_audio(
          "errors": [],
          "corrected_text": "Please try recording again and speak clearly."
      }
-     return templates.TemplateResponse("index.html", context)
+     return templates.TemplateResponse("result_partial.html", context)
 
     # Step 2: Analyze with Gemini (Run in thread pool)
     analysis_data = await loop.run_in_executor(
@@ -50,4 +49,4 @@ async def process_audio(
     analysis_data["transcript"] = transcript 
     analysis_data["request"] = request
     
-    return templates.TemplateResponse("index.html", analysis_data)
+    return templates.TemplateResponse("result_partial.html", analysis_data)
