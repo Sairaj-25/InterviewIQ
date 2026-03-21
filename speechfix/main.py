@@ -6,7 +6,7 @@ from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
 from speechfix.services.generate_question_service import generate_interview_question
-from speechfix.api.v1.router import router as speech_router        
+from speechfix.api.v1.router import router      
 
 app = FastAPI(title="SpeechFix API")
 
@@ -20,12 +20,12 @@ app.mount(
 
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
-app.include_router(speech_router, prefix="/api/v1/speech")         
+app.include_router(router, prefix="/api/v1/speech")         
 
 
 @app.get("/")
 async def home(request: Request):
-    return templates.TemplateResponse("index.html", {"request": request, "score": 0})
+    return templates.TemplateResponse("index.html", {"request": request})
 
 
 @app.get("/api/v1/questions/generate")

@@ -5,7 +5,7 @@ from pydub import AudioSegment
 # Initialize the model
 
 model_size = "base"
-model = WhisperModel(model_size, device="cpu", comppute_type="int8")
+model = WhisperModel(model_size, device="cpu", compute_type="int8")
 
 
 def transcribe_audio_whisper(audio_bytes: bytes) -> str:
@@ -33,5 +33,5 @@ def transcribe_audio_whisper(audio_bytes: bytes) -> str:
         return transcript.strip()
         
     except Exception as e:
-        print(f"Error during Vosk transcription: {e}")
+        print(f"Error during whisper transcription: {e}")
         return f"Transcription Failed: {str(e)}"
