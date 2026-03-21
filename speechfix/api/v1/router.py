@@ -39,7 +39,7 @@ async def process_audio(
          "errors": [],
          "corrected_text": "Please try recording again and speak clearly."
      }
-     return templates.TemplateResponse("result_partial.html", context)
+     return templates.TemplateResponse("index.html", context)
 
     # Step 2: Analyze with Gemini (Run in thread pool)
     analysis_data = await loop.run_in_executor(
@@ -50,4 +50,4 @@ async def process_audio(
     analysis_data["transcript"] = transcript 
     analysis_data["request"] = request
     
-    return templates.TemplateResponse("result_partial.html", analysis_data)
+    return templates.TemplateResponse("index.html", analysis_data)
