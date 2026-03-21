@@ -13,3 +13,5 @@ __pycache__/
 speechfix/models/vosk-model-en-in-0.5
 
 speechfix/models
+
+.cursor/
