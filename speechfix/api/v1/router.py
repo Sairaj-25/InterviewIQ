@@ -4,7 +4,7 @@ from fastapi.responses import HTMLResponse
 from fastapi.templating import Jinja2Templates
 from pathlib import Path
 
-from speechfix.services.audio_transcribe_service import transcribe_audio_vosk
+from speechfix.services.audio_transcribe_service import transcribe_audio_whisper
 from speechfix.services.grammar_service import analyze_grammar
 
 router = APIRouter()
@@ -26,7 +26,7 @@ async def process_audio(
     
     # Step 1: Transcribe with local Vosk (Run in thread pool to prevent blocking)
     transcript = await loop.run_in_executor(
-        None, transcribe_audio_vosk, audio_bytes
+        None, transcribe_audio_whisper, audio_bytes
     )
     
     # If the user submitted silence or transcription failed completely

@@ -10,7 +10,6 @@ __pycache__/
 
 .pytest_cache/
 
-speechfix/models/vosk-model-en-in-0.5
 
 speechfix/models
 

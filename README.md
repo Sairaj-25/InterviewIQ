@@ -55,7 +55,7 @@ grammer_check
 │   │       └── questions.py        <-- Gemini question generation routes
 │   │
 │   ├── models
-│   │   └── vosk-model-en-in-0.5    <-- Downloaded Vosk local model
+│   │   └── vosk-model-small-en-in-0.4    <-- Downloaded Vosk local model
 │   │
 │   ├── services
 │   │   ├── grammar_service.py           <-- Gemini analysis logic
