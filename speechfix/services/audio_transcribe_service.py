@@ -1,29 +1,17 @@
-import os
 import io
-import json
-from vosk import Model, KaldiRecognizer
+from faster_whisper import WhisperModel
 from pydub import AudioSegment
-from pathlib import Path
 
-# Get the absolute path to the downloaded Vosk model directory
-BASE_DIR = Path(__file__).resolve().parent.parent
+# Initialize the model
 
-# Update this to point exactly to the new model folder you added
-MODEL_PATH = os.path.join(BASE_DIR, "models", "vosk-model-en-in-0.5")
-
-# Ensure model exists before initializing
-if not os.path.exists(MODEL_PATH):
-    raise FileNotFoundError(f"Vosk model not found. Please ensure the model is extracted at: {MODEL_PATH}")
-
-# Initialize the Vosk model once when the module loads
-model = Model(MODEL_PATH)
+model_size = "base"
+model = WhisperModel(model_size, device="cpu", comppute_type="int8")
 
 
-def transcribe_audio_vosk(audio_bytes: bytes) -> str:
+def transcribe_audio_whisper(audio_bytes: bytes) -> str:
     """
-    Takes raw audio bytes (usually WebM from the browser), 
-    converts them to WAV format using Pydub, and transcribes 
-    using the local Vosk model.
+    Converts raw audio bytes to the required format and transcribes 
+    using Faster Whisper.
     """
     try:
         # Load the raw bytes into a pydub AudioSegment
@@ -37,24 +25,13 @@ def transcribe_audio_vosk(audio_bytes: bytes) -> str:
         audio.export(wav_io, format="wav")
         wav_io.seek(0)
         
-        # We skip the WAV header (first 44 bytes) to feed raw PCM data to Vosk
-        pcm_data = wav_io.read()[44:]
+        # Transcribe
+        segments, info = model.transcribe(wav_io, beam_size=5)
 
-        # Initialize KaldiRecognizer with the model and exact sample rate
-        rec = KaldiRecognizer(model, 16000)
+        # Combine segments into a single string
+        transcript = " ".join([segment.text for segment in segments])
+        return transcript.strip()
         
-        # Process the audio chunk by chunk
-        chunk_size = 4000
-        for i in range(0, len(pcm_data), chunk_size):
-            chunk = pcm_data[i:i+chunk_size]
-            rec.AcceptWaveform(chunk)
-            
-        # Extract the final JSON result from Vosk
-        result_json = json.loads(rec.FinalResult())
-        transcript = result_json.get("text", "")
-        
-        return transcript
-
     except Exception as e:
         print(f"Error during Vosk transcription: {e}")
         return f"Transcription Failed: {str(e)}"
