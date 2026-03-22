@@ -83,7 +83,7 @@ grammer_check/
 │   │           
 │   │
 │   ├── models/
-│   │   └── faster-whisper-model-small-en-in-0.4/  # Local faster-whisper model
+│   │   └── faster-whisper-model-small-en-in-0.4/  # Local faster-whisper model (Optional)
 │   │
 │   ├── services/
 │   │   ├── grammar_service.py                # Gemini grammar analysis logic
