@@ -75,8 +75,12 @@ grammer_check/
 │   │
 │   ├── api/
 │   │   └── v1/
-│   │       ├── router.py                     # Audio upload and analysis routes
-│   │       └── questions.py                  # Gemini question generation routes
+│   │       ├── __init__.py
+│   │       ├── router.py                     # All endpoint routers are registered here
+│   │       └── endpoints/
+│   │                 ├── analysis.py         # Analyses grammar with Gemini, returns the result_partial.html
+│   │                 └── questions.py        # Gemini question generation routes
+│   │           
 │   │
 │   ├── models/
 │   │   └── faster-whisper-model-small-en-in-0.4/  # Local faster-whisper model
@@ -95,6 +99,7 @@ grammer_check/
 │       └── result_partial.html               # Analysis partial returned by HTMX
 │
 ├── requirements.txt                          # Python dependencies
+├── README.md                    
 └── .gitignore
 ```
 
