@@ -1,9 +1,0 @@
-  feature/fastapi_setup[m
-  feature/generate_question[m
-  feature/index-page-ui[m
-  feature/record_transcribe[m
-  feature/update_README[m
-  feature/update_ui[m
-* [32mfeature/use_faster-whisper[m
-  feature/vosk_record_transcribe[m
-  main[m

@@ -1,45 +1,58 @@
-import asyncio
-from fastapi import FastAPI, Request, Query
-from fastapi.responses import JSONResponse
-from fastapi.staticfiles import StaticFiles
-from fastapi.templating import Jinja2Templates
+"""
+SpeechFix — Entry point
+Registers middleware, static files, templates, and the v1 API router.
+"""
+import logging
 from pathlib import Path
 
-from speechfix.services.generate_question_service import generate_interview_question
-from speechfix.api.v1.router import router      
+from fastapi import FastAPI, Request
+from fastapi.responses import HTMLResponse
+from fastapi.staticfiles import StaticFiles
+from fastapi.templating import Jinja2Templates
 
-app = FastAPI(title="SpeechFix API")
+from speechfix.api.v1.router import router as api_v1_router
 
+# Logging 
+logging.basicConfig(
+    level=logging.INFO,
+    format="%(asctime)s [%(levelname)s] %(name)s: %(message)s",
+)
+logger = logging.getLogger("speechfix")
+
+# App
+app = FastAPI(
+    title="SpeechFix API",
+    description="AI-powered interview practice: Faster-Whisper + Gemini Flash",
+    version="1.2.1",
+)
+
+# Paths 
+
+# main.py lives at speechfix/main.py  →  parent == speechfix/
 BASE_DIR = Path(__file__).resolve().parent
 
+# Static files
 app.mount(
     "/speechfix/static",
     StaticFiles(directory=str(BASE_DIR / "static")),
     name="static",
 )
 
+# Templates 
 templates = Jinja2Templates(directory=str(BASE_DIR / "templates"))
 
-app.include_router(router, prefix="/api/v1/speech")         
+# API v1 router (analysis + questions)
+
+app.include_router(api_v1_router, prefix="/api/v1")
 
 
-@app.get("/")
+# Frontend route
+@app.get("/", response_class=HTMLResponse)
 async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
-@app.get("/api/v1/questions/generate")
-async def get_question(
-    topic: str = Query(default="behavioral"),
-    difficulty: str = Query(default="easy"),
-):
-    loop = asyncio.get_event_loop()
-    result = await loop.run_in_executor(
-        None,
-        generate_interview_question,
-        topic,
-        difficulty,
-    )
-    if "error" in result:
-        return JSONResponse(status_code=500, content=result)
-    return JSONResponse(content=result)
+# Health check 
+@app.get("/health")
+async def health():
+    return {"status": "ok", "service": "SpeechFix"}

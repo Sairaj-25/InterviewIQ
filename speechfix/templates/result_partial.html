@@ -1,3 +1,7 @@
+<!--
+  result_partial.html — injected by HTMX into #analysis-result (Stage 4)
+-->
+
 <div class="glass-card">
   <div class="sec-label">✦ Transcription</div>
   <div class="transcript-box">{{ transcript }}</div>
@@ -16,12 +20,13 @@
     </div>
     <div class="score-info">
       <div class="title">Grammar Score</div>
-      <div class="lbl
-        {%- if score >= 90 %} " style="color:var(--green)"
-        {%- elif score >= 75 %} " style="color:var(--cyan)"
-        {%- elif score >= 55 %} " style="color:var(--amber)"
-        {%- else %} " style="color:var(--danger)"
-        {%- endif %}>{{ score_label }}</div>
+
+      <div class="lbl"
+        {% if score >= 90 %}style="color:var(--green)"
+        {% elif score >= 75 %}style="color:var(--cyan)"
+        {% elif score >= 55 %}style="color:var(--amber)"
+        {% else %}style="color:var(--danger)"
+        {% endif %}>{{ score_label }}</div>
     </div>
   </div>
 </div>

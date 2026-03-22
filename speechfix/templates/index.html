@@ -17,75 +17,72 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&family=DM+Mono:ital,wght@0,300;0,400;0,500;1,300&family=DM+Sans:ital,opsz,wght@0,9..40,300;0,9..40,400;0,9..40,600;1,9..40,300&display=swap" rel="stylesheet" />
-
-  <style>
-
-  </style>
 </head>
 
 <body>
 <div class="app-wrapper">
- 
+
   <!--  MASTHEAD  -->
   <header class="masthead">
     <h1 class="masthead-title">🎙 <span>SPEECH</span>FIX</h1>
-    <p class="tagline">OpenAI Whisper · Gemini Flash · Interview Practice</p>
+    <p class="tagline">Faster-Whisper · Gemini Flash · Interview Practice</p>
   </header>
- 
+
   <!--  STAGE PROGRESS NAV  -->
   <div class="stage-nav" id="stage-nav">
- 
+
     <div class="stage-step active" data-step="0">
       <div class="step-node active"><span>1</span></div>
       <div class="step-label">Topic</div>
     </div>
     <div class="step-connector" id="con-01"></div>
- 
+
     <div class="stage-step" data-step="1">
       <div class="step-node"><span>2</span></div>
       <div class="step-label">Mic</div>
     </div>
     <div class="step-connector" id="con-12"></div>
- 
+
     <div class="stage-step" data-step="2">
       <div class="step-node"><span>3</span></div>
       <div class="step-label">Question</div>
     </div>
     <div class="step-connector" id="con-23"></div>
- 
+
     <div class="stage-step" data-step="3">
       <div class="step-node"><span>4</span></div>
       <div class="step-label">Record</div>
     </div>
     <div class="step-connector" id="con-34"></div>
- 
+
     <div class="stage-step" data-step="4">
       <div class="step-node"><span>5</span></div>
       <div class="step-label">Results</div>
     </div>
- 
+
   </div>
- 
-  <!-- 
+
+  <!--
        STAGE 0 — Topic & difficulty selection
-        -->
+  -->
   <div class="stage active" id="stage-0">
     <div class="glass-card">
       <div class="sec-label">Session Setup</div>
       <p class="stage-heading">Choose your<br>topic.</p>
       <p class="stage-sub">Gemini will generate a tailored scenario question based on your selection.</p>
- 
+
       <div class="sec-label">Topic</div>
       <div class="pill-group" id="topic-group">
-        <div class="pill-opt" data-value="technical">Technical</div>
+        <!-- 'technical' is default to match JS state -->
+        <div class="pill-opt selected" data-value="technical">Technical</div>
         <div class="pill-opt" data-value="situational">Situational</div>
         <div class="pill-opt" data-value="leadership">Leadership</div>
         <div class="pill-opt" data-value="communication">Communication</div>
         <div class="pill-opt" data-value="problem_solving">Problem Solving</div>
       </div>
- 
+
       <hr class="sf">
- 
+
       <div class="sec-label">Difficulty</div>
       <div class="pill-group" id="diff-group">
         <div class="pill-opt easy selected" data-value="easy">Easy</div>
@@ -93,32 +90,32 @@
         <div class="pill-opt hard" data-value="hard">Hard</div>
       </div>
     </div>
- 
+
     <button class="btn-primary-sf" id="btn-to-mic">
       Continue <i class="bi bi-arrow-right-short"></i>
     </button>
   </div>
- 
-  <!-- 
+
+  <!--
        STAGE 1 — Microphone check with live waveform
-        -->
+  -->
   <div class="stage" id="stage-1">
     <div class="glass-card hi">
       <div class="sec-label">Step 1 — Microphone Check</div>
       <p class="stage-heading">Mic check.</p>
       <p class="stage-sub">Speak a few words to confirm your microphone is working before the session starts.</p>
- 
+
       <div class="waveform-wrap">
         <canvas class="waveform-canvas" id="waveform-mic"></canvas>
         <div class="vol-track"><div class="vol-fill" id="vol-fill-mic"></div></div>
       </div>
- 
+
       <div class="mic-status">
         <div class="mic-dot testing" id="mic-dot"></div>
         <span id="mic-status-text">Requesting microphone access…</span>
       </div>
     </div>
- 
+
     <button class="btn-primary-sf" id="btn-to-question" disabled>
       Mic OK — Get My Question <i class="bi bi-arrow-right-short"></i>
     </button>
@@ -126,27 +123,27 @@
       <i class="bi bi-arrow-left-short"></i> Back
     </button>
   </div>
- 
-  <!-- 
+
+  <!--
        STAGE 2 — Question display
-        -->
+  -->
   <div class="stage" id="stage-2">
     <div class="glass-card hi">
       <div class="sec-label">Step 2 — Your Question</div>
       <p class="stage-heading">Think,<br>then speak.</p>
       <p class="stage-sub">Read the question carefully. Press Record when you're ready to answer.</p>
       <hr class="sf">
- 
+
       <!-- Loading state -->
       <div class="loader-row" id="q-loader">
         <div class="sf-spinner"></div>
         <span>Generating your question via Gemini…</span>
       </div>
- 
+
       <!-- Question content (populated by JS) -->
       <div id="q-content" style="display:none">
         <div class="q-meta">
-          <span class="q-badge" id="q-topic-badge">Behavioural</span>
+          <span class="q-badge" id="q-topic-badge">Technical</span>
           <span class="q-badge" id="q-diff-badge">Easy</span>
         </div>
         <p class="q-text" id="q-text"></p>
@@ -155,7 +152,7 @@
         <p class="q-hint" id="q-hint"></p>
       </div>
     </div>
- 
+
     <button class="btn-primary-sf" id="btn-start-rec" disabled>
       <i class="bi bi-record-circle"></i> Start Recording
     </button>
@@ -163,90 +160,87 @@
       <i class="bi bi-shuffle"></i> Generate New Question
     </button>
   </div>
- 
-  <!-- 
+
+  <!--
        STAGE 3 — Active recording
-        -->
+  -->
   <div class="stage" id="stage-3">
     <div class="glass-card hi">
       <div class="sec-label">Step 3 — Recording</div>
- 
+
       <div class="rec-bar">
         <span class="rec-pill"><span class="rec-dot"></span> REC</span>
         <span class="rec-pill" style="color:var(--text-1)" id="rec-timer-sm">00:00</span>
       </div>
- 
+
       <div class="rec-timer" id="rec-timer-lg">00:00</div>
- 
+
       <div class="waveform-wrap">
         <canvas class="waveform-canvas" id="waveform-rec"></canvas>
       </div>
     </div>
- 
-    <!-- HTMX form — multipart post to FastAPI -->
+
+    <!-- HTMX form — multipart POST to FastAPI -->
     <form id="rec-form"
           hx-post="/api/v1/speech/analyze"
           hx-target="#analysis-result"
           hx-swap="innerHTML"
           hx-encoding="multipart/form-data"
           hx-on::after-request="onAnalysisDone()">
- 
+
       <input type="hidden" name="topic"      id="form-topic" />
       <input type="hidden" name="difficulty" id="form-difficulty" />
       <input type="file"   name="audio_file" id="audio-file-input" style="display:none" accept="audio/*" />
- 
-      <!-- Shown while HTMX request is in flight -->
-      <div class="glass-card" id="submit-htmx-loader">
+
+      <!-- Shown while HTMX request is in-flight -->
+      <div class="glass-card" id="submit-htmx-loader" style="display:none">
         <div class="loader-row">
           <div class="sf-spinner"></div>
           <span>Transcribing with Whisper &amp; analysing with Gemini…</span>
         </div>
       </div>
- 
+
       <button type="submit" class="btn-primary-sf" id="btn-submit-rec">
         <i class="bi bi-send-fill"></i> Submit Answer
       </button>
     </form>
- 
+
     <button class="btn-primary-sf btn-danger-sf" id="btn-discard" style="margin-top:.5rem">
       <i class="bi bi-trash"></i> Discard &amp; Re-record
     </button>
   </div>
- 
-  <!-- 
+
+  <!--
        STAGE 4 — Analysis results
-       HTMX injects into #analysis-result
-        -->
+       HTMX injects result_partial.html into #analysis-result
+  -->
   <div class="stage" id="stage-4">
     <p class="stage-heading" style="margin-bottom:.25rem">Your<br>feedback.</p>
     <p class="stage-sub">Whisper transcription + Gemini grammar analysis complete.</p>
- 
-<!-- 
-   HTMX TARGET — FastAPI returns _result_partial.html here.
-   Expected partial structure:
--->
 
     <div id="analysis-result"></div>
- 
+
     <button class="btn-primary-sf" onclick="startOver()" style="margin-top:.5rem">
       <i class="bi bi-arrow-repeat"></i> Try Another Question
     </button>
   </div>
- 
-  <!--  FOOTER ══ -->
+
+  <!--  FOOTER  -->
   <footer class="sf-footer">
-    OpenAI Whisper · FFmpeg · Gemini Flash · FastAPI · HTMX · Bootstrap 5
+    Faster-Whisper · FFmpeg · Gemini Flash · FastAPI · HTMX · Bootstrap 5
   </footer>
 </div>
- 
+
 <!-- Toast container -->
 <div class="toast-stack" id="toastStack"></div>
 
 <!-- Bootstrap 5 JS bundle -->
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"></script>
 
-<script src="/speechfix/static/app.js"> </script>
+<!-- HTMX must load BEFORE app.js so that htmx.trigger() is
+     available when app.js calls it during the submit flow. -->
 <script src="https://unpkg.com/htmx.org@1.9.10"></script>
+<script src="/speechfix/static/app.js"></script>
 
 </body>
 </html>
