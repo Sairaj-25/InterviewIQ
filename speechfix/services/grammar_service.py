@@ -1,20 +1,27 @@
-import os
+"""
+Grammar & communication analysis service — Google Gemini Flash.
+
+"""
 import json
-from pathlib import Path
+import logging
+
 from google import genai
 from google.genai import types
 from pydantic import BaseModel
-from dotenv import load_dotenv
 
-BASE_DIR = Path(__file__).resolve().parent.parent.parent
-load_dotenv(dotenv_path=BASE_DIR / ".env")
+from speechfix.core.config import get_settings
 
-client = genai.Client(api_key=os.getenv("GEMINI_API_KEY"))
+logger = logging.getLogger(__name__)
 
+settings = get_settings()
+client = genai.Client(api_key=settings.GEMINI_API_KEY)
+
+# Response schema 
 class GrammarError(BaseModel):
     original: str
     corrected: str
     explanation: str
+
 
 class AnalysisResult(BaseModel):
     score: int
@@ -22,42 +29,48 @@ class AnalysisResult(BaseModel):
     errors: list[GrammarError]
     corrected_text: str
 
+
 def analyze_grammar(transcript: str, topic: str, difficulty: str) -> dict:
     """
-    Evaluates the transcript using Gemini 1.5 Flash to provide
-    a score, detailed error breakdowns, and a corrected version.
+    Sends the transcript to Gemini Flash and returns a structured dict
+    matching AnalysisResult.  Falls back to a safe default on any error.
     """
     prompt = f"""
-    You are an expert English teacher and technical interviewer evaluating a candidate's spoken response.
-    
-    Interview Context:
-    - Topic: {topic}
-    - Difficulty: {difficulty}
-    
-    Candidate's Spoken Answer (Transcribed by AI):
-    "{transcript}"
-    
-    Evaluate the candidate's answer for grammar, clarity, and relevance to the topic.
-    Provide a score from 0 to 100, identify specific grammatical or structural errors, explain why they are wrong, and provide a fully corrected, professional version of their answer.
-    """
+                You are an expert English teacher and technical interviewer evaluating a candidate's spoken response.
+                
+                Interview Context:
+                - Topic: {topic}
+                - Difficulty: {difficulty}
+                
+                Candidate's Spoken Answer (transcribed by AI):
+                "{transcript}"
+                
+                Evaluate the answer for grammar, clarity, and relevance to the topic.
+                - Give a score from 0 to 100.
+                - Identify specific grammatical or structural errors.
+                - Explain why each error is wrong.
+                - Provide a fully corrected, professional version of the answer.
+                """
 
     try:
         response = client.models.generate_content(
-            model="gemini-1.5-flash",
+            model="gemini-2.5-flash",
             contents=prompt,
             config=types.GenerateContentConfig(
                 response_mime_type="application/json",
                 response_schema=AnalysisResult,
-                temperature=0.2, 
+                temperature=0.7,
             ),
         )
-        return json.loads(response.text)
+        data = json.loads(response.text)
+        logger.info("Grammar analysis complete: score=%s", data.get("score"))
+        return data
 
-    except Exception as e:
-        print(f"Error analyzing grammar: {e}")
+    except Exception as exc:
+        logger.error("Grammar analysis error: %s", exc, exc_info=True)
         return {
             "score": 0,
             "score_label": "Analysis Failed",
             "errors": [],
-            "corrected_text": "Unable to connect to AI for evaluation."
+            "corrected_text": "Unable to connect to AI for evaluation. Please try again.",
         }
