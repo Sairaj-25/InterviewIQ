@@ -164,20 +164,22 @@ The app will be available at **http://127.0.0.1:8000**
 
 ## 🔌 API Endpoints
 
-### Audio Analysis
+### Frontend
 | Method | Endpoint | Description |
 |---|---|---|
-| `POST` | `/api/v1/analyze` | Upload audio blob → transcribe + grammar analysis → returns HTML partial |
+| `GET` | `/` | Main application view |
+
 
 ### Question Generation
 | Method | Endpoint | Description |
 |---|---|---|
 | `GET` | `/api/v1/questions/generate` | Generate a scenario-based interview question via Gemini |
 
-### Frontend
+
+### Audio Analysis
 | Method | Endpoint | Description |
 |---|---|---|
-| `GET` | `/` | Main application view |
+| `POST` | `/api/v1/analyze` | Upload audio blob → transcribe + grammar analysis → returns HTML partial |
 
 ---
 
