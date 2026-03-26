@@ -48,6 +48,7 @@ def generate_interview_question(topic: str, difficulty: str) -> dict:
                 Python, Go, Django, FastAPI, SQL (PostgreSQL, MySQL),
                 GitHub Actions, REST APIs, AI & AI APIs,
                 Data Engineering (Pandas, ETL), Docker, Cloud basics.
+                
 
                 QUESTION RULES:
                 1. One practical, real-world, scenario-based question.
@@ -58,8 +59,7 @@ def generate_interview_question(topic: str, difficulty: str) -> dict:
                 3. Style per topic:
                    - Technical       → code logic, API design, SQL, pipelines, Docker
                    - Situational     → "What would you do if…" production scenarios
-                   - Leadership      → team conflicts, mentoring, ownership
-                   - Communication   → explain concepts clearly, stakeholder updates
+                   - Communication   → tell me a story 
                    - Problem Solving → fix broken logic, optimise slow queries or APIs
 
                 OUTPUT FORMAT — strict JSON, no markdown, no extra text:
