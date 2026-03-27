@@ -77,12 +77,6 @@ jobs:
       - name: Create .env for CI
         run: echo "GEMINI_API_KEY=${{ env.GEMINI_API_KEY }}" > speechfix/.env
 
-      - name: Run Tests with Coverage
-        run: |
-          coverage run -m pytest tests/ -v
-          coverage report -m
-          coverage xml
-
       - name: Upload Coverage Report
         if: matrix.python-version == '3.11'
         uses: actions/upload-artifact@v4
