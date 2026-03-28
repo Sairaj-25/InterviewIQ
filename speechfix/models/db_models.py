@@ -2,10 +2,11 @@ from sqlalchemy import Column, Integer, String, Text, ForeignKey
 from sqlalchemy.orm import relationship
 from speechfix.core.database import Base
 
+
 class User(Base):
     __tablename__ = "users"
 
-    id =   Column(Integer, primary_key=True, index=True)
+    id = Column(Integer, primary_key=True, index=True)
     full_name = Column(String, index=True)
     email = Column(String, unique=True, index=True)
     hashed_password = Column(String)
@@ -13,7 +14,7 @@ class User(Base):
     # 0ne-to-many relationship: A user can save multiple questions
     questions = relationship("Question", back_populates="owner")
 
-    
+
 class Question(Base):
     __tablename__ = "questions"
 
