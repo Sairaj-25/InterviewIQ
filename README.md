@@ -80,10 +80,14 @@ InterviewIQ/
 │   │       └── endpoints/
 │   │                 ├── analysis.py         # Analyses grammar with Gemini, returns the result_partial.html
 │   │                 └── questions.py        # Gemini question generation routes
-│   │           
+│   │
+│   ├── core/
+|   |   ├── __init__.py
+|   |   ├── config.py
+│   │   └── database.py              
 │   │
 │   ├── models/
-│   │   └── faster-whisper-model-small-en-in-0.4/  # Local faster-whisper model (Optional)
+│   │   └── db_models.py
 │   │
 │   ├── services/
 │   │   ├── grammar_service.py                # Gemini grammar analysis logic
