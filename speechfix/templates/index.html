@@ -23,8 +23,15 @@
 </head>
 
 
+  <style>
+    #loadingState.htmx-request { display: flex !important; }
+    .htmx-request #generateBtn { opacity: 0.7; pointer-events: none; }
+    .htmx-request #btnText { display: none; }
+    .htmx-request #btnSpinner { display: inline-block !important; }
+  </style>
+
 <body>
-  <!-- ═══ NAV ═══ -->
+  <!-- NAV  -->
   <nav class="sf-nav">
     <span class="sf-nav-brand">
       🎙&thinsp;<strong>InterviewIQ</strong>&thinsp;<span class="text-cyan">AI</span>
@@ -37,7 +44,7 @@
  
   <div class="app-wrapper">
  
-    <!-- ═══ STAGE PROGRESS NAV ═══ -->
+    <!--  STAGE PROGRESS NAV  -->
     <div class="stage-nav" id="stage-nav">
       <div class="stage-step active" data-step="0">
         <div class="step-node active"><span>1</span></div>
@@ -69,9 +76,7 @@
       </div>
     </div>
  
-    <!-- ═══════════════════════════════════════════
-         STAGE 0 — Topic & difficulty selection
-    ═══════════════════════════════════════════ -->
+    <!--  STAGE 0 — Topic & difficulty selection -->
     <div class="stage active" id="stage-0">
  
       <div class="glass-card" style="margin-top:1.5rem">
@@ -99,9 +104,7 @@
       </button>
     </div>
  
-    <!-- ═══════════════════════════════════════════
-         STAGE 1 — Microphone check
-    ═══════════════════════════════════════════ -->
+    <!--  STAGE 1 — Microphone check -->
     <div class="stage" id="stage-1">
  
       <div class="glass-card hi">
@@ -126,9 +129,7 @@
       </button>
     </div>
  
-    <!-- ═══════════════════════════════════════════
-         STAGE 2 — Question display
-    ═══════════════════════════════════════════ -->
+    <!--  STAGE 2 — Question display -->
     <div class="stage" id="stage-2">
  
       <div class="glass-card hi">
@@ -159,9 +160,7 @@
       </button>
     </div>
  
-    <!-- ═══════════════════════════════════════════
-         STAGE 3 — Active recording
-    ═══════════════════════════════════════════ -->
+    <!--  STAGE 3 — Active recording -->
     <div class="stage" id="stage-3">
  
       <div class="glass-card hi">
@@ -183,6 +182,8 @@
             hx-target="#analysis-result"
             hx-swap="innerHTML"
             hx-encoding="multipart/form-data"
+            hx-indicator="#result-loader"
+            hx-on::before-request="goToStage(4)"
             hx-on::after-request="onAnalysisDone()">
  
         <input type="hidden" name="topic"      id="form-topic" />
@@ -206,22 +207,30 @@
       </button>
     </div>
  
-    <!-- ═══════════════════════════════════════════
-         STAGE 4 — Analysis results
-         HTMX injects result_partial.html into #analysis-result
-    ═══════════════════════════════════════════ -->
-    <div class="stage" id="stage-4">
+        <!-- ═══════════════════════════════════════════
+          STAGE 4 — Analysis results
+          HTMX injects result_partial.html into #analysis-result
+     ═══════════════════════════════════════════ -->
+     <div class="stage" id="stage-4">
 
-      <p class="stage-sub">Whisper transcription + Gemini grammar analysis complete.</p>
+       <p class="stage-sub">Whisper transcription + Gemini grammar analysis complete.</p>
+  
+       <!-- Loading spinner while HTMX processes -->
+       <div class="glass-card" id="stage4-loader" style="display:none">
+         <div class="loader-row">
+           <div class="sf-spinner"></div>
+           <span>Analyzing your response…</span>
+         </div>
+       </div>
+
+       <div id="analysis-result"></div>
+  
+       <button class="btn-primary-sf" onclick="startOver()" style="margin-top:.5rem">
+         <i class="bi bi-arrow-repeat"></i> Try Another Question
+       </button>
+     </div>
  
-      <div id="analysis-result"></div>
- 
-      <button class="btn-primary-sf" onclick="startOver()" style="margin-top:.5rem">
-        <i class="bi bi-arrow-repeat"></i> Try Another Question
-      </button>
-    </div>
- 
-    <!-- ═══ FOOTER ═══ -->
+    <!--  FOOTER  -->
     <footer class="sf-footer">
       <span>Faster-Whisper</span> · <span>FFmpeg</span> · <span>Gemini Flash</span> · <span>FastAPI</span> · <span>HTMX</span> · <span>Bootstrap 5</span>
     </footer>

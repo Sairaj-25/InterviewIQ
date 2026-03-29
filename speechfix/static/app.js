@@ -321,17 +321,17 @@ function startOver() {
 document.body.addEventListener('htmx:beforeRequest', () => {
   const l = document.getElementById('submit-htmx-loader');
   if (l) l.style.display = 'block';
+  
+  // Also show the Stage 4 loader
+  const stage4loader = document.getElementById('stage4-loader');
+  if (stage4loader) stage4loader.style.display = 'block';
 });
 
 document.body.addEventListener('htmx:afterSettle', () => {
   const l = document.getElementById('submit-htmx-loader');
   if (l) l.style.display = 'none';
-});
-
-// Catch HTMX errors and show a toast instead of silently failing
-document.body.addEventListener('htmx:responseError', evt => {
-  const status = evt.detail?.xhr?.status;
-  toast(`⚠ Server error (${status || '?'}) — please try again.`);
-  document.getElementById('btn-submit-rec').disabled = false;
-  console.error('HTMX response error:', evt.detail);
+  
+  // Hide the Stage 4 loader when results are injected
+  const stage4loader = document.getElementById('stage4-loader');
+  if (stage4loader) stage4loader.style.display = 'none';
 });
