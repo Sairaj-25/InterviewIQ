@@ -9,7 +9,7 @@ Final URL map:
 """
 
 from fastapi import APIRouter
-from speechfix.api.v1.endpoints import analysis, questions
+from speechfix.api.v1.endpoints import analysis, questions, auth
 
 router = APIRouter()
 
@@ -17,3 +17,5 @@ router = APIRouter()
 router.include_router(questions.router, prefix="/questions", tags=["Questions"])
 
 router.include_router(analysis.router, prefix="/speech", tags=["Speech Analysis"])
+
+router.include_router(auth.router)
