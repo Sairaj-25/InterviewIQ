@@ -37,8 +37,9 @@
       🎙&thinsp;<strong>InterviewIQ</strong>&thinsp;<span class="text-cyan">AI</span>
     </span>
     <span class="sf-nav-badge d-none d-sm-flex">
-      <a>Sign in</a>
-      <a>Sign up</a>
+      <!-- Jinja2 way -->
+      <a href="{{ url_for('signin_page') }}">Sign in</a>
+      <a href="{{ url_for('signup_page') }}">Sign up</a>
     </span>
   </nav>
  

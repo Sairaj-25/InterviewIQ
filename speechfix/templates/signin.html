@@ -54,7 +54,7 @@
       </a>
     </span>
     <span class="sf-nav-badge d-none d-sm-flex">
-      <a href="/register.html">Sign up</a>
+      <a href="{{ url_for('signup_page') }}">Sign up</a>
     </span>
   </nav>
 
@@ -95,7 +95,7 @@
         <hr class="sf" style="margin: 1.5rem 0;">
         
         <p style="text-align: center; font-size: 0.9rem; color: var(--text-2, #aaa); margin: 0;">
-          Don't have an account? <a href="/register.html" class="text-cyan" style="text-decoration: none;">Sign up</a>
+          Don't have an account? <a href="{{ url_for('signup_page') }}" class="text-cyan" style="text-decoration: none;">Sign up</a>
         </p>
       </div>
     </div>
