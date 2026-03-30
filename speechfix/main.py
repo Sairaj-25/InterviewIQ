@@ -57,6 +57,21 @@ async def home(request: Request):
     return templates.TemplateResponse("index.html", {"request": request})
 
 
+@app.get("/signin", response_class=HTMLResponse, name="signin_page")
+async def login_page(request: Request):
+    return templates.TemplateResponse("signin.html", {"request": request})
+
+
+@app.get("/signup", response_class=HTMLResponse, name="signup_page")
+async def register_page(request: Request):
+    return templates.TemplateResponse("signup.html", {"request": request})
+
+
+@app.get("/index", response_class=HTMLResponse)
+def index(request: Request):
+    return templates.TemplateResponse("index.html", {"request": request})
+
+
 # Health check
 @app.get("/health")
 async def health():
